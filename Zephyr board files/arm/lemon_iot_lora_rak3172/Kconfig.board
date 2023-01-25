@@ -1,0 +1,8 @@
+# RAK3172 Lemon IoT LoRa board configuration
+
+# Copyright (c) 2023 Aaron Mohtar & Co Pty Ltd
+# SPDX-License-Identifier: Apache-2.0
+
+config BOARD_LEMON_IOT_LORA_RAK3172
+	bool "Lemon IoT LoRa RAK3172"
+	depends on SOC_STM32WLE5XX

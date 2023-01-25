@@ -1,0 +1,19 @@
+identifier: lemon_iot_lora_rak3172
+name: Lemon-IoT-LoRa-RAK3172
+type: mcu
+arch: arm
+toolchain:
+  - zephyr
+  - gnuarmemb
+  - xtools
+ram: 64
+flash: 256
+supported:
+  - counter
+  - gpio
+  - i2c
+  - nvs
+  - spi
+  - uart
+  - watchdog
+  - lora

@@ -1,0 +1,11 @@
+# RAK3172 Lemon IoT LoRa board configuration
+
+# Copyright (c) 2023 Aaron Mohtar & Co Pty Ltd
+# SPDX-License-Identifier: Apache-2.0
+
+if BOARD_LEMON_IOT_LORA_RAK3172
+
+config BOARD
+	default "lemon_iot_lora_rak3172"
+
+endif # BOARD_LEMON_IOT_LORA_RAK3172

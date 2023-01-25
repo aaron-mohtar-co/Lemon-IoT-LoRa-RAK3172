@@ -1,0 +1,166 @@
+/*
+ * Copyright (c) 2023 Aaron Mohtar & Co Pty Ltd
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/dts-v1/;
+#include <st/wl/stm32wle5Xc.dtsi>
+// Found in modules/hal/stm32/dts
+#include <st/wl/stm32wle5jcix-pinctrl.dtsi>
+#include "lemon_iot_lora_rak3172-pinctrl.dtsi"
+
+/ {
+	model = "Lemon IoT LoRa RAK3172";
+	compatible = "lemon-iot,lora-rak3172";
+
+	chosen {
+		zephyr,console = &usart1;
+		zephyr,shell-uart = &usart1;
+		zephyr,sram = &sram0;
+		zephyr,flash = &flash0;
+		zephyr,code-partition = &slot0_partition;
+	};
+
+	leds {
+		compatible = "gpio-leds";
+		led0: led_0 {
+			gpios = <&gpioa 3 GPIO_ACTIVE_LOW>;
+			label = "Red LED 0";
+		};
+		led1: led_1 {
+			gpios = <&gpioa 2 GPIO_ACTIVE_LOW>;
+			label = "Green LED 1";
+		};
+		led2: led_2 {
+			gpios = <&gpioa 4 GPIO_ACTIVE_LOW>;
+			label = "Blue LED 2";
+		};
+	};
+
+	buttons {
+		compatible = "gpio-keys";
+		button0: button_0 {
+			gpios = <&gpioa 6 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+			label = "Push button 0";
+		};
+	};
+
+	/* These aliases are provided for compatibility with samples */
+	aliases {
+		led0 = &led0;
+		led1 = &led1;
+		led2 = &led2;
+		sw0 = &button0;
+		bootloader-led0 = &led0;
+		mcuboot-button0 = &button0;
+		mcuboot-led0 = &led0;
+//watchdog0 = &iwdt;
+//lora0 = &lora;
+	};
+
+	power-states {
+		stop0: state0 {
+			compatible = "zephyr,power-state";
+			power-state-name = "suspend-to-idle";
+			substate-id = <1>;
+			min-residency-us = <100>;
+		};
+		stop1: state1 {
+			compatible = "zephyr,power-state";
+			power-state-name = "suspend-to-idle";
+			substate-id = <2>;
+			min-residency-us = <500>;
+		};
+		stop2: state2 {
+			compatible = "zephyr,power-state";
+			power-state-name = "suspend-to-idle";
+			substate-id = <3>;
+			min-residency-us = <900>;
+		};
+	};
+};
+
+&cpu0 {
+	cpu-power-states = <&stop0 &stop1 &stop2>;
+};
+
+&lptim1 {
+	status = "okay";
+	clocks = <&rcc STM32_CLOCK_BUS_APB1 0x80000000>,
+		 <&rcc STM32_SRC_LSI LPTIM1_SEL(1)>;
+};
+
+&clk_hse {
+	clock-frequency = <DT_FREQ_M(32)>;
+	hse-tcxo;
+};
+
+&clk_lse {
+	clock-frequency = <32768>;
+};
+
+&clk_lsi {
+	status = "okay";
+};
+
+&clk_msi {
+	status = "okay";
+	msi-range = <11>;
+};
+
+&rcc {
+	clocks = <&clk_msi>;
+	clock-frequency = <DT_FREQ_M(48)>;
+	cpu1-prescaler = <1>;
+	ahb3-prescaler = <1>;
+	apb1-prescaler = <1>;
+	apb2-prescaler = <1>;
+};
+
+&usart1 {
+	pinctrl-0 = <&usart1_tx_pb6 &usart1_rx_pb7>;
+	pinctrl-names = "default";
+	current-speed = <115200>;
+	status = "okay";
+};
+
+&rtc {
+	status = "okay";
+};
+
+&iwdg {
+	status = "okay";
+};
+
+&aes {
+	status = "okay";
+};
+
+&flash0 {
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		boot_partition: partition@0 {
+			label = "mcuboot";
+			reg = <0x00000000 DT_SIZE_K(32)>;
+			read-only;
+		};
+		slot0_partition: partition@8000 {
+			label = "image-0";
+			reg = <0x00008000 DT_SIZE_K(108)>;
+		};
+		slot1_partition: partition@23000 {
+			label = "image-1";
+			reg = <0x00023000 DT_SIZE_K(108)>;
+		};
+		storage_partition: partition@3e000 {
+			label = "storage";
+			reg = <0x0003e000 DT_SIZE_K(8)>;
+		};
+	};
+};
+
+
