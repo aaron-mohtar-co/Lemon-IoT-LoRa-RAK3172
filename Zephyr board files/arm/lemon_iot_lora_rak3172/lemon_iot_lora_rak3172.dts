@@ -56,7 +56,7 @@
 		mcuboot-button0 = &button0;
 		mcuboot-led0 = &led0;
 //watchdog0 = &iwdt;
-//lora0 = &lora;
+		lora0 = &lora;
 	};
 
 	power-states {
@@ -78,6 +78,16 @@
 			substate-id = <3>;
 			min-residency-us = <900>;
 		};
+	};
+};
+
+
+&subghzspi {
+	status = "okay";
+	lora: radio@0 {
+		status = "okay";
+		tx-enable-gpios = <&gpioc 13 GPIO_ACTIVE_HIGH>; 
+		rx-enable-gpios = <&gpiob 8 GPIO_ACTIVE_HIGH>;
 	};
 };
 
