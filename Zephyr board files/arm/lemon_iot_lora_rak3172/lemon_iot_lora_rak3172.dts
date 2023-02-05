@@ -102,26 +102,28 @@
 };
 
 &clk_hse {
+	status = "okay";
 	clock-frequency = <DT_FREQ_M(32)>;
-	hse-tcxo;
+	//hse-tcxo;
 };
 
 &clk_lse {
+	status = "okay";
 	clock-frequency = <32768>;
 };
 
 &clk_lsi {
-	status = "okay";
+	//status = "okay";
 };
 
 &clk_msi {
-	status = "okay";
+	//status = "okay";
 	msi-range = <11>;
 };
 
 &rcc {
-	clocks = <&clk_msi>;
-	clock-frequency = <DT_FREQ_M(48)>;
+	clocks = <&clk_hse>;
+	clock-frequency = <DT_FREQ_M(32)>;
 	cpu1-prescaler = <1>;
 	ahb3-prescaler = <1>;
 	apb1-prescaler = <1>;
