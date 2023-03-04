@@ -11,3 +11,6 @@ Before you can target the Lemon IoT LoRa 3172 module in Zephyr, board files will
 
 <p align="center"><img src="https://raw.githubusercontent.com/aaron-mohtar-co/Lemon-IoT-LoRa-RAK3172/main/Zephyr%20board%20files/arm/lemon_iot_lora_rak3172/doc/img/lemon_iot_rak3172_diagram.png" width=50% height=50%></p>
 
+## Examples
+
+An example LoRa Point to Point and LoRaWAN application for the Lemon IoT LoRa RAK3172 can be found in the [examples](https://github.com/aaron-mohtar-co/Lemon-IoT-LoRa-RAK3172/tree/main/Examples) folder.
