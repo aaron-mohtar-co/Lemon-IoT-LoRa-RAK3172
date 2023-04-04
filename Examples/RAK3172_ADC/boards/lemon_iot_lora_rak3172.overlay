@@ -1,4 +1,9 @@
 /*
+ * Lemon IoT LoRa RAK3172 ADC overlay
+ * 
+ * For STM32-adc bindings see:
+ * https://docs.zephyrproject.org/latest/build/dts/api/bindings/adc/st,stm32-adc.html#st-stm32-adc
+ *
  * Copyright (c) 2023 Aaron Mohtar & Co Pty Ltd
  *
  * SPDX-License-Identifier: Apache-2.0
