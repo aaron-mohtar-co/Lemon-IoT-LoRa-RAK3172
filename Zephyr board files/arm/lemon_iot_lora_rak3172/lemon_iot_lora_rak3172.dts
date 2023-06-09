@@ -88,6 +88,7 @@
 		status = "okay";
 		tx-enable-gpios = <&gpioc 13 GPIO_ACTIVE_HIGH>; 
 		rx-enable-gpios = <&gpiob 8 GPIO_ACTIVE_HIGH>;
+		power-amplifier-output = "rfo-hp";
 	};
 };
 
