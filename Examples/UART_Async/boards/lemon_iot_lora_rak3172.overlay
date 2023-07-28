@@ -1,0 +1,43 @@
+/ {
+	aliases {
+		cmduart = &usart2;
+	};
+};
+
+&usart2 {
+	// Binding information for STM32 DMAMUX Controller
+	// https://docs.zephyrproject.org/3.0.0/reference/devicetree/bindings/dma/st%2Cstm32-dmamux.html#dtbinding-st-stm32-dmamux
+
+	// STM32_DMA.h File Reference
+	// https://docs.zephyrproject.org/apidoc/latest/stm32__dma_8h.html
+
+	// DMA1 controller has 7 Channels, DMA2 controller another 7 Channels
+	// DMAMUX1 channels 0 to 6 are connected to DMA1 channels 1 to 7
+	// DMAMUX1 channels 7 to 13 are connected to DMA2 channels 1 to 7
+
+	// Slot 17 = USART1_RX, Slot 18 = USART1_TX
+	// Slot 19 = USART2_RX, Slot 20 = USART2_TX
+	// Slot 21 = LPUART1_RX, Slot 22 = LPUART1_TX
+
+	// Format of DMA cell below: Channel, slot, channel configuration
+
+	dmas = <&dmamux1 7 20 (STM32_DMA_PERIPH_TX | STM32_DMA_PRIORITY_MEDIUM)
+		   &dmamux1 0 19 (STM32_DMA_PERIPH_RX | STM32_DMA_PRIORITY_MEDIUM)>;
+	dma-names = "TX", "RX";
+	pinctrl-0 = <&usart2_tx_pa2 &usart2_rx_pa3>;
+	pinctrl-names = "default";
+	current-speed = <115200>;
+	status = "okay";
+};
+
+&dma1 {
+	status = "okay";
+};
+
+&dma2 {
+	status = "okay";
+};
+
+&dmamux1 {
+	status = "okay";
+};
