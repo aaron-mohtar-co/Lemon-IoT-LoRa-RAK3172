@@ -10,7 +10,7 @@ CONFIG_UART_CONSOLE=n
 CONFIG_RTT_CONSOLE=y
 ```
 
-On your PC, use J-Link RTT Viewer to connect to your RAK3172 (STM32WLE5CC) Target. If using Zephyr RTOS, it may not work with default settings (Auto Detection) as it cannot find the [RTT Control Block](https://wiki.segger.com/RTT#How_RTT_works) in the location the tools expect.   
+On your PC, use J-Link RTT Viewer to connect to your RAK3172 (STM32WLE5CC) Target. If using the Zephyr RTOS, it may not work with default settings (Auto Detection) as it cannot find the [RTT Control Block](https://wiki.segger.com/RTT#How_RTT_works) in the location the tools expect.  The tools will search for the RTT Control Block in a portion of memory, but not the entire memory range. 
 
 If this is the case, change the search range to 0x20000000 0x3000. 
 
