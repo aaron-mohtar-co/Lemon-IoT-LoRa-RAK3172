@@ -67,7 +67,7 @@ int lora_configure(const struct device *dev, bool transmit)
 	return(true);
 }
 
-void main(void)
+int main(void)
 {
 	const struct device *dev_lora;
 	int ret, bytes;
@@ -78,31 +78,31 @@ void main(void)
 	dev_lora = DEVICE_DT_GET(DT_ALIAS(lora0));
 	if (!device_is_ready(dev_lora)) {
 		printk("%s: device not ready", dev_lora->name);
-		return;
+		return(-1);
 	}
 
 	if (lora_configure(dev_lora, RECEIVE)) {
 		printk("LoRa Device Configured\n");
 	} else {
-		return;
+		return(-1);
 	}
 
 	// Setup SW1 Momentary Push Button:
 	if (!device_is_ready(button.port)) {
 		printk("Error: button device %s is not ready\n", button.port->name);
-		return;
+		return(-1);
 	}
 
 	ret = gpio_pin_configure_dt(&button, GPIO_INPUT);
 	if (ret != 0) {
 		printk("Error %d: failed to configure %s pin %d\n", ret, button.port->name, button.pin);
-		return;
+		return(-1);
 	}
 
 	ret = gpio_pin_interrupt_configure_dt(&button, GPIO_INT_EDGE_TO_ACTIVE);
 	if (ret != 0) {
 		printk("Error %d: failed to configure interrupt on %s pin %d\n", ret, button.port->name, button.pin);
-		return;
+		return(-1);
 	}
 
 	gpio_init_callback(&button_callback_data, button_callback, BIT(button.pin));
@@ -117,16 +117,15 @@ void main(void)
 	while (1) {
 
 		// Wait for SW1 to be pressed. Onced pressed, transmit some data
-
 		if (k_sem_take(&pb_pushed, K_FOREVER) != 0) {
 			printk("Error taking sem\n");
-		} 
+		}
 
 		// Cancel reception
 		ret = lora_recv_async(dev_lora, NULL);
 		if (ret < 0) {
 			LOG_ERR("LoRa recv_async failed %d\n", ret);
-		} 
+		}
 
 		// Reconfigure radio for transmit
 		lora_configure(dev_lora, TRANSMIT);	
@@ -148,6 +147,6 @@ void main(void)
 		ret = lora_recv_async(dev_lora, lora_recv_callback);
 		if (ret < 0) {
 			LOG_ERR("LoRa recv_async failed %d\n", ret);
-		} 
+		}
 	}
 }
