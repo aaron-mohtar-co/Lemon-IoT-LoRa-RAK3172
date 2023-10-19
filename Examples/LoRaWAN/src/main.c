@@ -53,7 +53,7 @@ static void lorwan_datarate_changed(enum lorawan_datarate dr)
 	LOG_INF("New Datarate: DR_%d, Max Payload %d", dr, max_size);
 }
 
-void main(void)
+int main(void)
 {
 	const struct device *lora_dev;
 	const struct device *i2c_dev;
@@ -77,13 +77,13 @@ void main(void)
 	fs.flash_device = NVS_PARTITION_DEVICE;
 	if (!device_is_ready(fs.flash_device)) {
 		printk("Flash device %s is not ready\n", fs.flash_device->name);
-		return;
+		return(-1);
 	}
 	fs.offset = NVS_PARTITION_OFFSET;
 	ret = flash_get_page_info_by_offs(fs.flash_device, fs.offset, &info);
 	if (ret) {
 		printk("Unable to get page info\n");
-		return;
+		return(-1);
 	}
 	fs.sector_size = info.size;
 	fs.sector_count = 3U;
@@ -91,14 +91,14 @@ void main(void)
 	ret = nvs_mount(&fs);
 	if (ret) {
 		printk("Flash Init failed\n");
-		return;
+		return(-1);
 	}
 
 #if NVS_CLEAR
 	ret = nvs_clear(&fs);
 	if (ret) {
 		printk("Flash Clear failed\n");
-		return;
+		return(-1);
 	} else {
 		printk("Cleared NVS from flash\n");
 	}
@@ -120,7 +120,7 @@ void main(void)
 	i2c_dev = DEVICE_DT_GET(DT_ALIAS(sensorbus));
 	if (!i2c_dev) {
 		printk("I2C: Device driver not found.\n");
-		return;
+		return(-1);
 	} else {
 		//i2c_configure(i2c_dev, I2C_SPEED_SET(I2C_SPEED_STANDARD));
 	}
@@ -128,14 +128,14 @@ void main(void)
 	lora_dev = DEVICE_DT_GET(DT_ALIAS(lora0));
 	if (!device_is_ready(lora_dev)) {
 		printk("%s: device not ready.", lora_dev->name);
-		return;
+		return(-1);
 	}
 
 	printk("Starting LoRaWAN stack.\n");
 	ret = lorawan_start();
 	if (ret < 0) {
 		printk("lorawan_start failed: %d\n\n", ret);
-		return;
+		return(-1);
 	}
 
 	// Enable callbacks
@@ -202,7 +202,7 @@ void main(void)
 			continue;
 		} else if (ret < 0) {
 			LOG_ERR("lorawan_send failed: %d", ret);
-			return;
+			return(-1);
 		}
 
 		LOG_INF("Data sent!");
