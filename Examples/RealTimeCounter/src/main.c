@@ -27,13 +27,13 @@ struct counter_alarm_cfg alarm_cfg;
 #define ALARM_CHANNEL_ID 0
 
 static void test_counter_interrupt_fn(const struct device *counter_dev,
-				      uint8_t chan_id, uint32_t ticks,
-				      void *user_data)
+				uint8_t chan_id, uint32_t ticks,
+				void *user_data)
 {
 	printk("Alarm\n");
 }
 
-void main(void)
+int main(void)
 {
 	const struct device *const counter_dev = DEVICE_DT_GET(DT_INST(0, st_stm32_rtc));
 	int err;
@@ -41,8 +41,8 @@ void main(void)
 	printk("Lemon IoT RAK3172 Real Time Clock Example\nBoard: %s\n", CONFIG_BOARD);
 
 	if (!device_is_ready(counter_dev)) {
-			printk("device not ready.\n");
-			return 0;
+		printk("device not ready.\n");
+		return(-1);
 	}
 
 	counter_start(counter_dev);
@@ -54,9 +54,9 @@ void main(void)
 
 	err = counter_set_channel_alarm(counter_dev, ALARM_CHANNEL_ID, &alarm_cfg);
 	printk("Set alarm in %u sec (%u ticks)\n",
-			(uint32_t)(counter_ticks_to_us(counter_dev,
-			alarm_cfg.ticks) / USEC_PER_SEC),
-			alarm_cfg.ticks);
+		(uint32_t)(counter_ticks_to_us(counter_dev,
+		alarm_cfg.ticks) / USEC_PER_SEC),
+		alarm_cfg.ticks);
 
 	if (-EINVAL == err) {
 		printk("Alarm settings invalid\n");

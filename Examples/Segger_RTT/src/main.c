@@ -14,7 +14,7 @@
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(rtt);
 
-void main(void)
+int main(void)
 {
 	printk("Zephyr Hello World! Example \nBoard: %s\n", CONFIG_BOARD);
 

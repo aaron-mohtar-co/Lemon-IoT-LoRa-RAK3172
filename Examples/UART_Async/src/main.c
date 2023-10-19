@@ -66,7 +66,7 @@ void uart_callback(const struct device *dev, struct uart_event *evt, void *user_
 	}
 }
 
-void main(void)
+int main(void)
 {
 	const struct device *uart_dev;
 	char buffer[100];
@@ -78,25 +78,25 @@ void main(void)
 	uart_dev = DEVICE_DT_GET(DT_ALIAS(cmduart));
 	if (!uart_dev) {
 		printk("uartlog DT alias not found.\n");
-		return;
+		return(-1);
 	}
 
 	if (!device_is_ready(uart_dev)) {
 		printk("UART device not ready.\n");
-		return;
+		return(-1);
 	}
  
 	ret = k_mem_slab_alloc(&uart_slab, (void **)&buf, K_NO_WAIT);
 	if (ret != 0) {
 		printk("k_mem_slab_alloc() error (%d)\n", ret);
-		return;
+		return(-1);
 	}
 
 	ret = uart_callback_set(uart_dev, uart_callback, NULL);
 	if (ret != 0) {
 		printk("uart_callback_set() error (%d)\n", ret);
 		if (ret == -ENOTSUP) printk("ASYNC API not enabled\n");
-		return;
+		return(-1);
 	}
 
 	ret = uart_rx_enable(uart_dev, buf, BUF_SIZE, 100000);
