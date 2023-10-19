@@ -47,9 +47,11 @@ void main(void)
 
 	const struct adc_sequence adc_sequence = {
 		.channels = BIT(ADC_CHANNEL),
+		.calibrate = 1,
 		.buffer = &buf,
 		.buffer_size = sizeof(buf),
-		.resolution = 12
+		.resolution = 12,
+		.oversampling = 5
 	};
 
 	printk("Lemon IoT RAK3172 ADC Example\nBoard: %s\n", CONFIG_BOARD);
