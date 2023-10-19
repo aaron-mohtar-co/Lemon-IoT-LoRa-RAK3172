@@ -32,7 +32,7 @@
 
 #define ADC_CHANNEL		2
 
-void main(void)
+int main(void)
 {
 	const struct device *dev_adc;
 	int err;
@@ -59,12 +59,12 @@ void main(void)
 	dev_adc = DEVICE_DT_GET(DT_ALIAS(adcperiph));
 	if (!device_is_ready(dev_adc)) {
 		 printk("ADC: Device binding failed.\n");
-	}	
+	}
 
 	err = adc_channel_setup(dev_adc, &channel_cfg);
 	if (err < 0) {
 		printk("Could not setup ADC channel (%d)\n", err);
-		return;
+		return(-1);
 	}
 
 	while(1) {
