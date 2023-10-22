@@ -1,0 +1,35 @@
+/*
+ * Copyright (c) 2023 Aaron Mohtar & Co Pty Ltd
+ *
+ * Random Number Generator (RNG) must be clocked from 48MHz. We enable PLL to
+ * generate this. If the clock speed is wrong, the device may not boot.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+&clk_hse {
+	status = "okay";
+	clock-frequency = <DT_FREQ_M(32)>;
+};
+
+&pll {
+	status = "okay";
+	div-m = <1>;
+	mul-n = <3>;
+	div-r = <2>;
+	div-q = <2>;
+	clocks = <&clk_hse>;
+};
+
+&rcc {
+	clocks = <&pll>;
+	clock-frequency = <DT_FREQ_M(48)>;
+	cpu1-prescaler = <1>;
+	ahb3-prescaler = <1>;
+	apb1-prescaler = <1>;
+	apb2-prescaler = <1>;
+};
+
+&rng {
+	status = "okay";
+};
