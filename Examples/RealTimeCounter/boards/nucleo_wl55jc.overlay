@@ -1,0 +1,12 @@
+
+&clk_lse {
+	status = "okay";
+	clock-frequency = <32768>;
+};
+
+&rtc {
+	status = "okay";
+	clocks = <&rcc STM32_CLOCK_BUS_APB1 0x00000400>,
+			<&rcc STM32_SRC_LSE RTC_SEL(1)>;
+	clock-frequency = <32768>;
+};
