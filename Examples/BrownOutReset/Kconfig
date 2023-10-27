@@ -1,0 +1,9 @@
+mainmenu "My Application"
+
+config MYAPP_STM32
+  default y
+  bool
+  select USE_STM32_HAL_FLASH
+  select USE_STM32_HAL_FLASH_EX
+
+source "Kconfig.zephyr"
