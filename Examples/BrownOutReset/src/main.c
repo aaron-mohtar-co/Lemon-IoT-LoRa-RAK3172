@@ -1,9 +1,10 @@
-
 /*
  * RAK3172 Brown Out Reset Example
  *
- * https://www.st.com/resource/en/user_manual/um2642-description-of-stm32wl-hal-and-lowlayer-drivers-stmicroelectronics.pdf
- * D:\Zephyr\zephyrproject\modules\hal\stm32\stm32cube\stm32wlxx\drivers\include
+ * On boot, this example prints the reset cause and then checks the brown-out 
+ * reset threshold. If the threshold is not level 3 (approximately 2.5V), it 
+ * sets the threshold to level 3 by flashing the flash option bytes.
+ *
  */
 
 #include <stdio.h>
