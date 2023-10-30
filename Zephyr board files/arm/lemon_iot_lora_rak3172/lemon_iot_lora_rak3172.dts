@@ -6,7 +6,6 @@
 
 /dts-v1/;
 #include <st/wl/stm32wle5Xc.dtsi>
-// Found in modules/hal/stm32/dts
 #include <st/wl/stm32wle5jcix-pinctrl.dtsi>
 #include "lemon_iot_lora_rak3172-pinctrl.dtsi"
 
@@ -55,12 +54,11 @@
 		bootloader-led0 = &led0;
 		mcuboot-button0 = &button0;
 		mcuboot-led0 = &led0;
-//watchdog0 = &iwdt;
+		watchdog0 = &iwdg;
 		lora0 = &lora;
 	};
 
 };
-
 
 &subghzspi {
 	status = "okay";
@@ -72,35 +70,59 @@
 	};
 };
 
-&lptim1 {
-	status = "okay";
-	clocks = <&rcc STM32_CLOCK_BUS_APB1 0x80000000>,
-		 <&rcc STM32_SRC_LSI LPTIM1_SEL(1)>;
-};
-
-&clk_hse {
-	status = "okay";
-	clock-frequency = <DT_FREQ_M(32)>;
-	//hse-tcxo;
-};
-
 &clk_lse {
+	// Low-Speed External Crystal
+	// RAK3172 has 32.768KHz Crystal Fitted
 	status = "okay";
 	clock-frequency = <32768>;
 };
 
 &clk_lsi {
-	//status = "okay";
+	// Low-Speed Internal 32kHz
+	status = "disabled";
+};
+
+&lptim1 {
+	// Low Power Timer
+	// Required for Low Power Management
+	// https://docs.zephyrproject.org/3.0.0/reference/devicetree/bindings/timer/st%2Cstm32-lptim.html#dtbinding-st-stm32-lptim
+	status = "okay";
+	clocks = <&rcc STM32_CLOCK_BUS_APB1 0x80000000>,
+		 	<&rcc STM32_SRC_LSE LPTIM1_SEL(3)>;
+};
+
+&clk_hse {
+	// High-Speed External 32 MHz Oscillator Clock with trimming capacitors
+	// https://docs.zephyrproject.org/3.0.0/reference/devicetree/bindings/clock/st%2Cstm32-hse-clock.html#dtbinding-st-stm32-hse-clock
+	status = "okay";
+	clock-frequency = <DT_FREQ_M(32)>;
 };
 
 &clk_msi {
-	//status = "okay";
-	msi-range = <11>;
+	// Multi-Speed Internal RC Oscillator from 100 kHz to 48 MHz
+	// MSI Range = 11 (48MHz), Range 6 = (4MHz)
+	// The MSI is used as system clock source after startup from reset, configured at 4 MHz.
+	status = "okay";
+	msi-range = <6>;
+};
+
+&clk_hsi {
+	// High-Speed Internal 16MHz RC Oscillator Clock
+	status = "disabled";
+};
+
+&pll {
+	status = "okay";
+	div-m = <1>;
+	mul-n = <3>;
+	div-r = <2>;
+	div-q = <2>;
+	clocks = <&clk_hse>;
 };
 
 &rcc {
-	clocks = <&clk_hse>;
-	clock-frequency = <DT_FREQ_M(32)>;
+	clocks = <&pll>;
+	clock-frequency = <DT_FREQ_M(48)>;
 	cpu1-prescaler = <1>;
 	ahb3-prescaler = <1>;
 	apb1-prescaler = <1>;
@@ -123,6 +145,10 @@
 };
 
 &aes {
+	status = "okay";
+};
+
+&rng {
 	status = "okay";
 };
 
