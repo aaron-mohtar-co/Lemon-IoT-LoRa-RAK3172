@@ -1,54 +1,20 @@
+/*
+ * Lemon IoT LoRa RAK3172 overlay
+ * Copyright (c) 2023 Aaron Mohtar & Co Pty Ltd
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
+/ {
+	chosen {
+		zephyr,console = &lpuart1;
+		zephyr,shell-uart = &lpuart1;
+	};
+};
 
-&lptim1 {
-	// Low Power Timer
-	// https://docs.zephyrproject.org/3.0.0/reference/devicetree/bindings/timer/st%2Cstm32-lptim.html#dtbinding-st-stm32-lptim
+&lpuart1 {
+	pinctrl-0 = <&lpuart1_tx_pa2 &lpuart1_rx_pa3>;
+	pinctrl-names = "default";
+	current-speed = <115200>;
 	status = "okay";
-	st,prescaler = <32>;
-	clocks = <&rcc STM32_CLOCK_BUS_APB1 0x80000000>,
-		 <&rcc STM32_SRC_LSE LPTIM1_SEL(3)>;
-};
-
-&clk_hse {
-	// High-Speed External 32 MHz Oscillator Clock with trimming capacitors
-	// https://docs.zephyrproject.org/3.0.0/reference/devicetree/bindings/clock/st%2Cstm32-hse-clock.html#dtbinding-st-stm32-hse-clock
-	// RAK3172 has 32MHz Crystal Fitted.
-	// HSE32 Clock drives SubGHz Radio
-	status = "okay";
-	clock-frequency = <DT_FREQ_M(32)>;
-};
-
-&clk_lse {
-	// Low-Speed External Crystal
-	// RAK3172 has 32.768KHz Crystal Fitted
-	status = "okay";
-	clock-frequency = <32768>;
-};
-
-&clk_lsi {
-	// Low-Speed Internal 32kHz
-	status = "disabled";
-};
-
-&clk_msi {
-	// Multi-Speed Internal RC Oscillator from 100 kHz to 48 MHz
-	// MSI Range = 11 (48MHz), Range 6 = (4MHz)
-	// The MSI is used as system clock source after startup from reset, configured at 4 MHz.
-	status = "okay";
-	msi-range = <6>;
-};
-
-&clk_hsi {
-	status = "disabled";
-};
-
-&rcc {
-	// STM32 Reset and Clock controller node
-	// https://docs.zephyrproject.org/3.0.0/reference/devicetree/bindings/clock/st%2Cstm32-rcc.html#dtbinding-st-stm32-rcc
-	clocks = <&clk_hse>;
-	clock-frequency = <DT_FREQ_M(32)>;
-	cpu1-prescaler = <1>;	// Primary CPU
-	ahb3-prescaler = <1>;	// 
-	apb1-prescaler = <1>;	// Peripheral Bus 1
-	apb2-prescaler = <1>;	// Peripheral Bus 2
 };
