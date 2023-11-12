@@ -92,7 +92,7 @@ The [Lemon IoT RAK3172 Device Tree](https://github.com/aaron-mohtar-co/Lemon-IoT
 		 	<&rcc STM32_SRC_LSE LPTIM1_SEL(3)>;
 };
 ```
-In addition to CONFIG_PM, adding CONFIG_STM32_LPTIM_CLOCK_LSE prevents a warning *Advised tick freq is 4096 for LSE / 4000 for LSI*
+In addition to [CONFIG_PM](https://docs.zephyrproject.org/latest/kconfig.html#CONFIG_PM), adding [CONFIG_STM32_LPTIM_CLOCK_LSE](https://docs.zephyrproject.org/latest/kconfig.html#CONFIG_STM32_LPTIM_CLOCK_LSE) prevents a warning *Advised tick freq is 4096 for LSE / 4000 for LSI*
 ```
 CONFIG_PM=y
 CONFIG_STM32_LPTIM_CLOCK_LSE=y
