@@ -1,0 +1,37 @@
+/*
+ * Lemon IoT LoRa RAK3172 RTC overlay
+ * 
+ * For STM32-adc bindings see:
+ * https://docs.zephyrproject.org/latest/build/dts/api/bindings/rtc/st%2Cstm32-rtc.html#dtbinding-st-stm32-rtc
+ *
+ * Copyright (c) 2023 Aaron Mohtar & Co Pty Ltd
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/ {
+	chosen {
+		zephyr,console = &lpuart1;
+		zephyr,shell-uart = &lpuart1;
+	};
+};
+
+&lpuart1 {
+	pinctrl-0 = <&lpuart1_tx_pa2 &lpuart1_rx_pa3>;
+	pinctrl-names = "default";
+	current-speed = <115200>;
+	status = "okay";
+};
+
+&clk_lse {
+	status = "okay";
+	clock-frequency = <32768>;
+};
+
+&rtc {
+	status = "okay";
+	clocks = <&rcc STM32_CLOCK_BUS_APB1 0x00000400>,
+			<&rcc STM32_SRC_LSE RTC_SEL(1)>;
+	clock-frequency = <32768>;
+};
+
