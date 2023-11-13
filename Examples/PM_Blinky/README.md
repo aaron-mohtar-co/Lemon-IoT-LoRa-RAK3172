@@ -18,7 +18,12 @@ As you can see, this value will vary due to supply voltage, temperature and crys
 
 ## Actual Measurements
 
-Measurements were taken with the [Nordic Power Profiler Kit 2](https://www.nordicsemi.com/Products/Development-hardware/Power-Profiler-Kit-2)
+Measurements were taken with the [Nordic Power Profiler Kit 2](https://www.nordicsemi.com/Products/Development-hardware/Power-Profiler-Kit-2) at 3.0V.
 
+![Power Profile @ 3.0V](https://github.com/aaron-mohtar-co/Lemon-IoT-LoRa-RAK3172/blob/main/Examples/PM_Blinky/img/STOP2PowerProfile.png)
 
+When the LED is not operating the consumed current is approximately 1.39uA @ 3.0V. At 3.3V, this increased to 1.73uA.
 
+Some tolerance was observed between boards (as expected). One board was as high as 2.41uA @ 3.0V. 
+
+Accuracy of test and measurement equipment should also be considered. The Nordic PP2 has a "measurement accuracy better than ±20 %".
