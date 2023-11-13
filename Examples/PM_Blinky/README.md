@@ -12,7 +12,7 @@ The ballpark STOP 2 target current consumption is 1uA for the STM32WLE5CC. The f
 
 ![Table 25: Main Performances at VDD = 3V](https://github.com/aaron-mohtar-co/Lemon-IoT-LoRa-RAK3172/blob/main/Examples/PM_Blinky/img/main_performances.png)
 
-As you can see, this value will vary due to supply voltage, temperature and crystal. (On the Lemon-IoT-LoRa-RAK3172, we use the external 32.768kHz Crystal - LSE) 
+More detail is provided in the table below. This value will vary due to supply voltage, temperature and crystal. (On the Lemon-IoT-LoRa-RAK3172, we use the external 32.768kHz Crystal - LSE) 
 
 ![Table 43. Current consumption in Stop 2 mode](https://github.com/aaron-mohtar-co/Lemon-IoT-LoRa-RAK3172/blob/main/Examples/PM_Blinky/img/Stop2_detailed.png)
 
@@ -24,6 +24,6 @@ Measurements were taken with the [Nordic Power Profiler Kit 2](https://www.nordi
 
 When the LED is not operating the consumed current is approximately 1.39uA @ 3.0V. At 3.3V, this increased to 1.73uA.
 
-Some tolerance was observed between boards (as expected). One board was as high as 2.41uA @ 3.0V. 
+Some tolerance was observed between boards (as expected). One board was as high as 2.41uA @ 3.0V (see max column in table 43 above). 
 
 Accuracy of test and measurement equipment should also be considered. The Nordic PP2 has a "measurement accuracy better than ±20 %".
